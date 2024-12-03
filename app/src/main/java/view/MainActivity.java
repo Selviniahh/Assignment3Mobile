@@ -5,15 +5,13 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment3.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -35,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-
+        FirebaseApp.initializeApp(this);
+        
         // Check if the user is signed in
         if (mAuth.getCurrentUser() == null) {
             // No user is signed in, navigate to LoginActivity
@@ -46,13 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Set content view for authenticated users
         setContentView(R.layout.activity_main);
-
-        // Optional: Edge-to-Edge customization
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         // Initialize RecyclerView
         recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
@@ -69,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             movieAdapter.notifyDataSetChanged();
         });
 
-        // Fetch movies from Firestore
+        // Start listening for real-time updates
         movieViewModel.fetchMovies();
 
         // Add button to navigate to Add/Edit Screen

@@ -1,19 +1,28 @@
+// repository/MovieRepository.java
+
 package repository;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import model.Movie;
 
 public class MovieRepository {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private MutableLiveData<List<Movie>> moviesLiveData = new MutableLiveData<>();
+    private List<Movie> moviesList = new ArrayList<>();
 
     public LiveData<List<Movie>> getMoviesLiveData() {
         return moviesLiveData;
@@ -21,19 +30,51 @@ public class MovieRepository {
 
     public void fetchMovies() {
         db.collection("movies")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Movie> movies = new ArrayList<>();
-                    for (DocumentSnapshot document : queryDocumentSnapshots) {
-                        Movie movie = document.toObject(Movie.class);
-                        movie.setId(document.getId()); // Save the document ID
-                        movies.add(movie);
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            // Handle the error appropriately
+                            return;
+                        }
+
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    Movie newMovie = dc.getDocument().toObject(Movie.class);
+                                    newMovie.setId(dc.getDocument().getId());
+                                    moviesList.add(newMovie);
+                                    break;
+                                case MODIFIED:
+                                    Movie modifiedMovie = dc.getDocument().toObject(Movie.class);
+                                    modifiedMovie.setId(dc.getDocument().getId());
+                                    int index = findMovieIndexById(modifiedMovie.getId());
+                                    if (index != -1) {
+                                        moviesList.set(index, modifiedMovie);
+                                    }
+                                    break;
+                                case REMOVED:
+                                    String removedId = dc.getDocument().getId();
+                                    int removeIndex = findMovieIndexById(removedId);
+                                    if (removeIndex != -1) {
+                                        moviesList.remove(removeIndex);
+                                    }
+                                    break;
+                            }
+                        }
+                        moviesLiveData.postValue(moviesList);
                     }
-                    moviesLiveData.postValue(movies);
-                })
-                .addOnFailureListener(e -> {
-                    // Handle errors
                 });
+    }
+
+    private int findMovieIndexById(String id) {
+        for (int i = 0; i < moviesList.size(); i++) {
+            if (moviesList.get(i).getId().equals(id)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void addMovie(Movie movie) {
@@ -41,6 +82,7 @@ public class MovieRepository {
                 .add(movie)
                 .addOnSuccessListener(documentReference -> {
                     // Movie added successfully
+                    // No need to manually update LiveData; the snapshot listener will handle it
                 })
                 .addOnFailureListener(e -> {
                     // Handle errors
@@ -53,6 +95,7 @@ public class MovieRepository {
                 .set(movie)
                 .addOnSuccessListener(aVoid -> {
                     // Movie updated successfully
+                    // Snapshot listener will handle the update
                 })
                 .addOnFailureListener(e -> {
                     // Handle errors
@@ -65,6 +108,7 @@ public class MovieRepository {
                 .delete()
                 .addOnSuccessListener(aVoid -> {
                     // Movie deleted successfully
+                    // Snapshot listener will handle the removal
                 })
                 .addOnFailureListener(e -> {
                     // Handle errors

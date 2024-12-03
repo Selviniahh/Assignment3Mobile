@@ -59,8 +59,8 @@
 
             <ImageButton
                     android:id="@+id/buttonEdit"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:src="@drawable/edit"
                     android:scaleType="fitCenter"
                     android:contentDescription="@string/edit_movie"
@@ -69,8 +69,8 @@
 
             <ImageButton
                     android:id="@+id/buttonDelete"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/delete"
                     android:scaleType="fitCenter"
                     android:contentDescription="@string/delete_movie"

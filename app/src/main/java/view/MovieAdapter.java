@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment3.R;
@@ -110,6 +109,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     private void loadImageFromUrl(String url, ImageView imageView) {
+        // Validate the URL
+        if (TextUtils.isEmpty(url) ||
+                !(url.startsWith("http://") || url.startsWith("https://"))) {
+            // Set a placeholder image if URL is invalid
+            new Handler(Looper.getMainLooper()).post(() ->
+                    imageView.setImageResource(R.drawable.browser) // Ensure you have this drawable
+            );
+            return;
+        }
+
+        // Proceed to load the image if URL is valid
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -118,7 +128,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                // Optionally set a placeholder or error image here
+                // Set a placeholder or error image on failure
                 new Handler(Looper.getMainLooper()).post(() ->
                         imageView.setImageResource(R.drawable.browser)
                 );
@@ -133,7 +143,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                         imageView.setImageBitmap(bitmap);
                     });
                 } else {
-                    // Optionally set a placeholder or error image here
+                    // Set a placeholder image if the response is not successful
                     new Handler(Looper.getMainLooper()).post(() ->
                             imageView.setImageResource(R.drawable.browser)
                     );
@@ -141,6 +151,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             }
         });
     }
+
 
     @Override
     public int getItemCount() {

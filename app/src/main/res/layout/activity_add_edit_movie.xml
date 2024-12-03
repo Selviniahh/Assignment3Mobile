@@ -46,5 +46,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"/>
 
+        <!-- Cancel Button -->
+        <Button
+                android:id="@+id/buttonCancel"
+                android:text="Cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/design_default_color_error"
+                android:textColor="@android:color/white"/>
     </LinearLayout>
 </ScrollView>

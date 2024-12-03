@@ -1,5 +1,6 @@
 package view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -17,7 +18,7 @@ import viewmodel.MovieViewModel;
 public class AddEditMovieActivity extends AppCompatActivity {
 
     private EditText editTextTitle, editTextStudio, editTextCriticsRating, editTextPosterUrl;
-    private Button buttonSave;
+    private Button buttonSave, buttonCancel;
 
     private MovieViewModel movieViewModel;
     private Movie movieToEdit;
@@ -36,6 +37,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
         editTextCriticsRating = findViewById(R.id.editTextCriticsRating);
         editTextPosterUrl = findViewById(R.id.editTextPosterUrl);
         buttonSave = findViewById(R.id.buttonSave);
+        buttonCancel = findViewById(R.id.buttonCancel);
 
         // Check if editing existing movie
         if (getIntent().hasExtra("movie")) {
@@ -49,6 +51,13 @@ public class AddEditMovieActivity extends AppCompatActivity {
         }
 
         buttonSave.setOnClickListener(v -> saveMovie());
+
+        buttonCancel.setOnClickListener(v -> {
+            // Navigate back to MainActivity without saving
+            Intent intent = new Intent(AddEditMovieActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void populateFields(Movie movie) {
@@ -66,6 +75,14 @@ public class AddEditMovieActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(studio)) {
             Toast.makeText(this, "Title and Studio are required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Optional: Validate the poster URL
+        if (!TextUtils.isEmpty(posterUrl) &&
+                !(posterUrl.startsWith("http://") || posterUrl.startsWith("https://"))) {
+            Toast.makeText(this, "Please enter a valid URL for the poster", Toast.LENGTH_SHORT).show();
+            editTextPosterUrl.requestFocus();
             return;
         }
 
