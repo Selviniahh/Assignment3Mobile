@@ -57,7 +57,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             buttonEdit = view.findViewById(R.id.buttonEdit);
             buttonDelete = view.findViewById(R.id.buttonDelete);
 
-            // Set click listeners for Edit and Delete buttons
             buttonEdit.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
@@ -72,9 +71,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Movie selectedMovie = moviesList.get(position);
-                    // Call delete method from ViewModel
                     movieViewModel.deleteMovie(selectedMovie.getId());
-                    // Remove the item from the list and notify adapter
+                    // Remove the item from the list 
                     moviesList.remove(position);
                     notifyItemRemoved(position);
                 }
@@ -104,7 +102,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         if (!TextUtils.isEmpty(movie.getPoster())) {
             loadImageFromUrl(movie.getPoster(), holder.imageViewPoster);
         } else {
-            holder.imageViewPoster.setImageResource(R.drawable.image); // A placeholder image in your drawable resources
+            holder.imageViewPoster.setImageResource(R.drawable.image); 
         }
     }
 
@@ -114,7 +112,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 !(url.startsWith("http://") || url.startsWith("https://"))) {
             // Set a placeholder image if URL is invalid
             new Handler(Looper.getMainLooper()).post(() ->
-                    imageView.setImageResource(R.drawable.browser) // Ensure you have this drawable
+                    imageView.setImageResource(R.drawable.browser) 
             );
             return;
         }
@@ -128,7 +126,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                // Set a placeholder or error image on failure
                 new Handler(Looper.getMainLooper()).post(() ->
                         imageView.setImageResource(R.drawable.browser)
                 );
@@ -143,7 +140,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                         imageView.setImageBitmap(bitmap);
                     });
                 } else {
-                    // Set a placeholder image if the response is not successful
                     new Handler(Looper.getMainLooper()).post(() ->
                             imageView.setImageResource(R.drawable.browser)
                     );

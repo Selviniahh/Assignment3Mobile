@@ -10,35 +10,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <!-- Title -->
         <EditText
                 android:id="@+id/editTextTitle"
                 android:hint="Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <!-- Studio -->
         <EditText
                 android:id="@+id/editTextStudio"
                 android:hint="Studio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <!-- Critics Rating -->
         <EditText
                 android:id="@+id/editTextCriticsRating"
                 android:hint="Critics Rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <!-- Poster URL -->
         <EditText
                 android:id="@+id/editTextPosterUrl"
                 android:hint="Poster URL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <!-- Save Button -->
         <Button
                 android:id="@+id/buttonSave"
                 android:text="Save"
@@ -46,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"/>
 
-        <!-- Cancel Button -->
         <Button
                 android:id="@+id/buttonCancel"
                 android:text="Cancel"

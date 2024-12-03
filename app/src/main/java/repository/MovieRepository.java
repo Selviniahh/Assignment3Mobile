@@ -1,8 +1,5 @@
-// repository/MovieRepository.java
-
 package repository;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -35,7 +32,6 @@ public class MovieRepository {
                     public void onEvent(@Nullable QuerySnapshot snapshots,
                                         @Nullable FirebaseFirestoreException e) {
                         if (e != null) {
-                            // Handle the error appropriately
                             return;
                         }
 
@@ -81,11 +77,10 @@ public class MovieRepository {
         db.collection("movies")
                 .add(movie)
                 .addOnSuccessListener(documentReference -> {
-                    // Movie added successfully
-                    // No need to manually update LiveData; the snapshot listener will handle it
+                    // Movie added successfully at right hre 
                 })
                 .addOnFailureListener(e -> {
-                    // Handle errors
+                    
                 });
     }
 
@@ -94,11 +89,9 @@ public class MovieRepository {
                 .document(movie.getId())
                 .set(movie)
                 .addOnSuccessListener(aVoid -> {
-                    // Movie updated successfully
-                    // Snapshot listener will handle the update
+                    // Movie updated perfectly fine 
                 })
                 .addOnFailureListener(e -> {
-                    // Handle errors
                 });
     }
 
@@ -107,11 +100,9 @@ public class MovieRepository {
                 .document(movieId)
                 .delete()
                 .addOnSuccessListener(aVoid -> {
-                    // Movie deleted successfully
-                    // Snapshot listener will handle the removal
+                    // Movie deleted 
                 })
                 .addOnFailureListener(e -> {
-                    // Handle errors
                 });
     }
 }

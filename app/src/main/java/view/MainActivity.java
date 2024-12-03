@@ -22,7 +22,7 @@ import viewmodel.MovieViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth; // Firebase Authentication instance
+    private FirebaseAuth mAuth; 
     private MovieViewModel movieViewModel;
     private RecyclerView recyclerViewMovies;
     private MovieAdapter movieAdapter;
@@ -35,18 +35,14 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseApp.initializeApp(this);
         
-        // Check if the user is signed in
         if (mAuth.getCurrentUser() == null) {
-            // No user is signed in, navigate to LoginActivity
             startActivity(new Intent(this, LoginActivity.class));
             finish();
-            return; // Stop further execution
+            return;
         }
 
-        // Set content view for authenticated users
         setContentView(R.layout.activity_main);
 
-        // Initialize RecyclerView
         recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
         moviesList = new ArrayList<>();
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
@@ -61,17 +57,14 @@ public class MainActivity extends AppCompatActivity {
             movieAdapter.notifyDataSetChanged();
         });
 
-        // Start listening for real-time updates
         movieViewModel.fetchMovies();
 
-        // Add button to navigate to Add/Edit Screen
         FloatingActionButton fabAdd = findViewById(R.id.fabAddMovie);
         fabAdd.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AddEditMovieActivity.class);
             startActivity(intent);
         });
 
-        // Logout button functionality
         findViewById(R.id.buttonLogout).setOnClickListener(v -> {
             mAuth.signOut();
             Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();

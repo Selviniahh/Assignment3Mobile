@@ -1,42 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <!-- Email Input -->
-    <EditText
-            android:id="@+id/editTextEmail"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
-    <!-- Password Input -->
-    <EditText
-            android:id="@+id/editTextPassword"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/textViewEmailLabel"
+                android:text="Email"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-    <!-- Register Button -->
-    <Button
-            android:id="@+id/buttonRegister"
-            android:text="Register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"/>
+        <EditText
+                android:id="@+id/editTextEmail"
+                android:hint="Enter your email"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"/>
 
-    <!-- Cancel Button -->
-    <Button
-            android:id="@+id/buttonCancel"
-            android:text="Cancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/design_default_color_error"
-            android:textColor="@android:color/white"/>
-</LinearLayout>
+        <TextView
+                android:id="@+id/textViewPasswordLabel"
+                android:text="Password"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <EditText
+                android:id="@+id/editTextPassword"
+                android:hint="Enter your password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"/>
+
+        <Button
+                android:id="@+id/buttonRegister"
+                android:text="Register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
+
+        <Button
+                android:id="@+id/buttonCancel"
+                android:text="Cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/design_default_color_error"
+                android:textColor="@android:color/white"/>
+
+        <TextView
+                android:id="@+id/textViewLoginLink"
+                android:text="Already have an account? Login here"
+                android:textSize="16sp"
+                android:textColor="@color/design_default_color_primary"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+    </LinearLayout>
+</ScrollView>

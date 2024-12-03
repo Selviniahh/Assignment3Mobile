@@ -31,7 +31,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
         // Initialize ViewModel
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
-        // Initialize views
+        // Initialize all my views
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextStudio = findViewById(R.id.editTextStudio);
         editTextCriticsRating = findViewById(R.id.editTextCriticsRating);
@@ -53,7 +53,6 @@ public class AddEditMovieActivity extends AppCompatActivity {
         buttonSave.setOnClickListener(v -> saveMovie());
 
         buttonCancel.setOnClickListener(v -> {
-            // Navigate back to MainActivity without saving
             Intent intent = new Intent(AddEditMovieActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -78,7 +77,6 @@ public class AddEditMovieActivity extends AppCompatActivity {
             return;
         }
 
-        // Optional: Validate the poster URL
         if (!TextUtils.isEmpty(posterUrl) &&
                 !(posterUrl.startsWith("http://") || posterUrl.startsWith("https://"))) {
             Toast.makeText(this, "Please enter a valid URL for the poster", Toast.LENGTH_SHORT).show();
@@ -87,7 +85,8 @@ public class AddEditMovieActivity extends AppCompatActivity {
         }
 
         if (movieToEdit != null) {
-            // Update existing movie
+            
+            // Update already existing movie
             movieToEdit.setTitle(title);
             movieToEdit.setStudio(studio);
             movieToEdit.setCriticsRating(criticsRating);
@@ -95,7 +94,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
             movieViewModel.updateMovie(movieToEdit);
             Toast.makeText(this, "Movie updated", Toast.LENGTH_SHORT).show();
         } else {
-            // Add new movie
+            // Add movie 
             Movie newMovie = new Movie();
             newMovie.setTitle(title);
             newMovie.setStudio(studio);

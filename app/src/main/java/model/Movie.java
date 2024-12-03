@@ -3,17 +3,17 @@ package model;
 import java.io.Serializable;
 
 public class Movie implements Serializable {
-    private String id; // Firestore document ID
+    private String id; 
     private String title;
     private String studio;
     private String poster;
     private String criticsRating;
 
-    // Default Constructor
+    // Default CTOR
     public Movie() {
     }
 
-    // Parameterized Constructor
+    // Parameterized CTOR
     public Movie(String id, String title, String studio, String poster, String criticsRating) {
         this.id = id;
         this.title = title;

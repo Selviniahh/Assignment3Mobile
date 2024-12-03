@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,12 +12,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.assignment3.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import viewmodel.MovieViewModel;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText editTextEmail, editTextPassword;
     private Button buttonRegister, buttonCancel;
+    private TextView textViewLoginLink;
 
-    private FirebaseAuth mAuth; // Firebase Authentication instance
+    private FirebaseAuth mAuth;
+
+    private MovieViewModel movieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +37,21 @@ public class RegisterActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonRegister = findViewById(R.id.buttonRegister);
         buttonCancel = findViewById(R.id.buttonCancel);
+        textViewLoginLink = findViewById(R.id.textViewLoginLink);
 
-        // Set click listener for Register
         buttonRegister.setOnClickListener(v -> registerUser());
 
-        // Set click listener for Cancel
         buttonCancel.setOnClickListener(v -> {
-            // Navigate back to LoginActivity
+
             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish(); // Optional: Finish RegisterActivity so it's removed from the back stack
+            finish();
+        });
+
+        textViewLoginLink.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -48,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        // Validate inputs
         if (email.isEmpty()) {
             editTextEmail.setError("Email is required");
             editTextEmail.requestFocus();
@@ -73,15 +83,12 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Create user with email and password
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                // Registration success, navigate to LoginActivity
                 Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
             } else {
-                // If registration fails, display a message to the user.
                 Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
             }
         });

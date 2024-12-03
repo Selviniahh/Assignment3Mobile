@@ -4,14 +4,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <!-- RecyclerView for displaying movies -->
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMovies"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp" />
 
-    <!-- FloatingActionButton for adding movies -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddMovie"
             android:layout_width="wrap_content"
@@ -21,7 +19,6 @@
             android:src="@drawable/add"
             android:contentDescription="Add Movie" />
 
-    <!-- Logout Button -->
     <Button
             android:id="@+id/buttonLogout"
             android:layout_width="wrap_content"

@@ -12,7 +12,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <!-- Movie Poster -->
         <ImageView
                 android:id="@+id/imageViewPoster"
                 android:layout_width="80dp"
@@ -20,7 +19,6 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/movie_poster"/>
 
-        <!-- Movie Details -->
         <LinearLayout
                 android:layout_marginStart="8dp"
                 android:orientation="vertical"
@@ -50,7 +48,6 @@
 
         </LinearLayout>
 
-        <!-- Edit and Delete Buttons -->
         <LinearLayout
                 android:orientation="vertical"
                 android:gravity="center"
