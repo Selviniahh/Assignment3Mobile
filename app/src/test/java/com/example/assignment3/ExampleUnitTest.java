@@ -1,4 +1,4 @@
-package com.example.assignment3mobile;
+package com.example.assignment3;
 
 import org.junit.Test;
 

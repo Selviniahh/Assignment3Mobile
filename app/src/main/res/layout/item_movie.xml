@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <!-- Movie Poster -->
+        <ImageView
+                android:id="@+id/imageViewPoster"
+                android:layout_width="80dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/movie_poster"/>
+
+        <!-- Movie Details -->
+        <LinearLayout
+                android:layout_marginStart="8dp"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+            <TextView
+                    android:id="@+id/textViewTitle"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/textViewStudio"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
+                    android:id="@+id/textViewCriticsRating"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- Edit and Delete Buttons -->
+        <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+            <ImageButton
+                    android:id="@+id/buttonEdit"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:src="@drawable/edit"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/edit_movie"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="8dp"/>
+
+            <ImageButton
+                    android:id="@+id/buttonDelete"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:src="@drawable/delete"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/delete_movie"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="13dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

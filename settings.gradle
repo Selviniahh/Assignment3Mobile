@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Assignment3Mobile"
-include(":app")
- 
+rootProject.name = "Assignment3"
+include ':app'
