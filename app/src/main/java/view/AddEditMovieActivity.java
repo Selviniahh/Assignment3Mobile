@@ -22,7 +22,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         binding = ActivityAddEditMovieBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -52,6 +52,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
         binding.editTextStudio.setText(movie.getStudio());
         binding.editTextCriticsRating.setText(movie.getCriticsRating());
         binding.editTextPosterUrl.setText(movie.getPoster());
+        binding.checkBoxFavorite.setChecked(movie.isFavorite()); 
     }
 
     private void saveMovie() {
@@ -59,6 +60,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
         String studio = binding.editTextStudio.getText().toString().trim();
         String criticsRating = binding.editTextCriticsRating.getText().toString().trim();
         String posterUrl = binding.editTextPosterUrl.getText().toString().trim();
+        boolean isFavorite = binding.checkBoxFavorite.isChecked(); 
 
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(studio)) {
             Toast.makeText(this, "Title and Studio are required", Toast.LENGTH_SHORT).show();
@@ -73,11 +75,11 @@ public class AddEditMovieActivity extends AppCompatActivity {
         }
 
         if (movieToEdit != null) {
-            
             movieToEdit.setTitle(title);
             movieToEdit.setStudio(studio);
             movieToEdit.setCriticsRating(criticsRating);
             movieToEdit.setPoster(posterUrl);
+            movieToEdit.setFavorite(isFavorite);
             movieViewModel.updateMovie(movieToEdit);
             Toast.makeText(this, "Movie updated", Toast.LENGTH_SHORT).show();
         } else {
@@ -86,6 +88,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
             newMovie.setStudio(studio);
             newMovie.setCriticsRating(criticsRating);
             newMovie.setPoster(posterUrl);
+            newMovie.setFavorite(isFavorite); 
             movieViewModel.addMovie(newMovie);
             Toast.makeText(this, "Movie added", Toast.LENGTH_SHORT).show();
         }

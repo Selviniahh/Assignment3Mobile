@@ -64,7 +64,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 if (position != RecyclerView.NO_POSITION) {
                     Movie selectedMovie = moviesList.get(position);
                     movieViewModel.deleteMovie(selectedMovie.getId());
-                    // Remove the item from the list 
                     moviesList.remove(position);
                     notifyItemRemoved(position);
                 }
@@ -76,11 +75,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             binding.textViewStudio.setText("Studio: " + movie.getStudio());
             binding.textViewCriticsRating.setText("Rating: " + movie.getCriticsRating());
 
-            // Load poster image if available
             if (!TextUtils.isEmpty(movie.getPoster())) {
                 loadImageFromUrl(movie.getPoster(), binding.imageViewPoster);
             } else {
-                binding.imageViewPoster.setImageResource(R.drawable.image); 
+                binding.imageViewPoster.setImageResource(R.drawable.image);
             }
         }
     }
@@ -88,7 +86,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the layout using View Binding
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ItemMovieBinding binding = ItemMovieBinding.inflate(inflater, parent, false);
         return new MovieViewHolder(binding);
@@ -101,17 +98,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     private void loadImageFromUrl(String url, ImageView imageView) {
-        // Validate the URL
         if (TextUtils.isEmpty(url) ||
                 !(url.startsWith("http://") || url.startsWith("https://"))) {
-            // Set a placeholder image if URL is invalid
             new Handler(Looper.getMainLooper()).post(() ->
-                    imageView.setImageResource(R.drawable.browser) 
+                    imageView.setImageResource(R.drawable.browser)
             );
             return;
         }
 
-        // Proceed to load the image if URL is valid
         Request request = new Request.Builder()
                 .url(url)
                 .build();

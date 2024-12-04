@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private MovieAdapter movieAdapter;
     private List<Movie> moviesList;
     private ActivityMainBinding binding;
+
+    private List<Movie> allMoviesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +51,23 @@ public class MainActivity extends AppCompatActivity {
         binding.recyclerViewMovies.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewMovies.setAdapter(movieAdapter);
 
-        movieViewModel.getFilteredMovies().observe(this, movies -> {
-            moviesList.clear();
-            if (movies != null) {
-                moviesList.addAll(movies);
+        movieViewModel.getMoviesLiveData().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
+                allMoviesList.clear();
+                if (movies != null) {
+                    allMoviesList.addAll(movies);
+                }
+                applyFilters(); 
             }
-            movieAdapter.notifyDataSetChanged();
+        });
+
+        binding.buttonSearch.setOnClickListener(v -> {
+            applyFilters();
+        });
+
+        binding.checkBoxShowFavorites.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            applyFilters();
         });
 
         binding.fabAddMovie.setOnClickListener(v -> {
@@ -67,15 +81,25 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         });
+    }
 
-        binding.buttonSearch.setOnClickListener(v -> {
-            String query = binding.editTextSearch.getText().toString().trim();
-            if (!query.isEmpty()) {
-                movieViewModel.filterMovies(query);
-            } else {
-                movieViewModel.filterMovies("");
-                Toast.makeText(this, "Showing all movies", Toast.LENGTH_SHORT).show();
+    private void applyFilters() {
+        String query = binding.editTextSearch.getText().toString().trim().toLowerCase();
+        boolean showFavorites = binding.checkBoxShowFavorites.isChecked();
+
+        List<Movie> filteredList = new ArrayList<>();
+
+        for (Movie movie : allMoviesList) {
+            boolean matchesQuery = movie.getTitle().toLowerCase().contains(query);
+            boolean matchesFavorite = !showFavorites || movie.isFavorite();
+
+            if (matchesQuery && matchesFavorite) {
+                filteredList.add(movie);
             }
-        });
+        }
+
+        moviesList.clear();
+        moviesList.addAll(filteredList);
+        movieAdapter.notifyDataSetChanged();
     }
 }

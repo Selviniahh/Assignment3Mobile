@@ -3,23 +3,25 @@ package model;
 import java.io.Serializable;
 
 public class Movie implements Serializable {
-    private String id; 
+    private String id;
     private String title;
     private String studio;
     private String poster;
     private String criticsRating;
+    private boolean isFavorite; 
 
-    // Default CTOR
+    // Default Constructor
     public Movie() {
     }
 
-    // Parameterized CTOR
-    public Movie(String id, String title, String studio, String poster, String criticsRating) {
+    // Parameterized Constructor
+    public Movie(String id, String title, String studio, String poster, String criticsRating, boolean isFavorite) {
         this.id = id;
         this.title = title;
         this.studio = studio;
         this.poster = poster;
         this.criticsRating = criticsRating;
+        this.isFavorite = isFavorite;
     }
 
     // Getters and Setters
@@ -61,5 +63,13 @@ public class Movie implements Serializable {
 
     public void setCriticsRating(String criticsRating) {
         this.criticsRating = criticsRating;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

@@ -26,42 +26,39 @@ public class MovieRepository {
     }
 
     public void fetchMovies() {
-        db.collection("movies")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            return;
-                        }
+        db.collection("movies").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                }
 
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            switch (dc.getType()) {
-                                case ADDED:
-                                    Movie newMovie = dc.getDocument().toObject(Movie.class);
-                                    newMovie.setId(dc.getDocument().getId());
-                                    moviesList.add(newMovie);
-                                    break;
-                                case MODIFIED:
-                                    Movie modifiedMovie = dc.getDocument().toObject(Movie.class);
-                                    modifiedMovie.setId(dc.getDocument().getId());
-                                    int index = findMovieIndexById(modifiedMovie.getId());
-                                    if (index != -1) {
-                                        moviesList.set(index, modifiedMovie);
-                                    }
-                                    break;
-                                case REMOVED:
-                                    String removedId = dc.getDocument().getId();
-                                    int removeIndex = findMovieIndexById(removedId);
-                                    if (removeIndex != -1) {
-                                        moviesList.remove(removeIndex);
-                                    }
-                                    break;
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            Movie newMovie = dc.getDocument().toObject(Movie.class);
+                            newMovie.setId(dc.getDocument().getId());
+                            moviesList.add(newMovie);
+                            break;
+                        case MODIFIED:
+                            Movie modifiedMovie = dc.getDocument().toObject(Movie.class);
+                            modifiedMovie.setId(dc.getDocument().getId());
+                            int index = findMovieIndexById(modifiedMovie.getId());
+                            if (index != -1) {
+                                moviesList.set(index, modifiedMovie);
                             }
-                        }
-                        moviesLiveData.postValue(moviesList);
+                            break;
+                        case REMOVED:
+                            String removedId = dc.getDocument().getId();
+                            int removeIndex = findMovieIndexById(removedId);
+                            if (removeIndex != -1) {
+                                moviesList.remove(removeIndex);
+                            }
+                            break;
                     }
-                });
+                }
+                moviesLiveData.postValue(moviesList);
+            }
+        });
     }
 
     private int findMovieIndexById(String id) {
@@ -74,35 +71,22 @@ public class MovieRepository {
     }
 
     public void addMovie(Movie movie) {
-        db.collection("movies")
-                .add(movie)
-                .addOnSuccessListener(documentReference -> {
-                    // Movie added successfully at right hre 
-                })
-                .addOnFailureListener(e -> {
-                    
-                });
+        db.collection("movies").add(movie).addOnSuccessListener(documentReference -> {
+            // Movie added successfully
+        }).addOnFailureListener(e -> {
+            // Handle failure
+        });
     }
 
     public void updateMovie(Movie movie) {
-        db.collection("movies")
-                .document(movie.getId())
-                .set(movie)
-                .addOnSuccessListener(aVoid -> {
-                    // Movie updated perfectly fine 
-                })
-                .addOnFailureListener(e -> {
-                });
+        db.collection("movies").document(movie.getId()).set(movie).addOnSuccessListener(aVoid -> {
+        }).addOnFailureListener(e -> {
+        });
     }
 
     public void deleteMovie(String movieId) {
-        db.collection("movies")
-                .document(movieId)
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    // Movie deleted 
-                })
-                .addOnFailureListener(e -> {
-                });
+        db.collection("movies").document(movieId).delete().addOnSuccessListener(aVoid -> {
+        }).addOnFailureListener(e -> {
+        });
     }
 }
