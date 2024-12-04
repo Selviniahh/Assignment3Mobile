@@ -7,10 +7,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.assignment3.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.assignment3.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -24,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth; 
     private MovieViewModel movieViewModel;
-    private RecyclerView recyclerViewMovies;
     private MovieAdapter movieAdapter;
     private List<Movie> moviesList;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +39,31 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        recyclerViewMovies = findViewById(R.id.recyclerViewMovies);
         moviesList = new ArrayList<>();
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         movieAdapter = new MovieAdapter(this, moviesList, movieViewModel);
-        recyclerViewMovies.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewMovies.setAdapter(movieAdapter);
+        binding.recyclerViewMovies.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewMovies.setAdapter(movieAdapter);
 
-        // Observe LiveData
         movieViewModel.getMovies().observe(this, movies -> {
             moviesList.clear();
-            moviesList.addAll(movies);
+            if (movies != null) {
+                moviesList.addAll(movies);
+            }
             movieAdapter.notifyDataSetChanged();
         });
 
         movieViewModel.fetchMovies();
 
-        FloatingActionButton fabAdd = findViewById(R.id.fabAddMovie);
-        fabAdd.setOnClickListener(v -> {
+        binding.fabAddMovie.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AddEditMovieActivity.class);
             startActivity(intent);
         });
 
-        findViewById(R.id.buttonLogout).setOnClickListener(v -> {
+        binding.buttonLogout.setOnClickListener(v -> {
             mAuth.signOut();
             Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));

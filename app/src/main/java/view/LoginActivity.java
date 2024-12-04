@@ -2,64 +2,53 @@ package view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.assignment3.R;
+import com.example.assignment3.databinding.ActivityLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText editTextEmail, editTextPassword;
-    private Button buttonLogin;
-    private TextView textViewRegister;
-
+    private ActivityLoginBinding binding;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         mAuth = FirebaseAuth.getInstance();
 
-        // Initialize views
-        editTextEmail = findViewById(R.id.editTextEmail);
-        editTextPassword = findViewById(R.id.editTextPassword);
-        buttonLogin = findViewById(R.id.buttonLogin);
-        textViewRegister = findViewById(R.id.textViewRegister);
+        binding.buttonLogin.setOnClickListener(v -> loginUser());
 
-        buttonLogin.setOnClickListener(v -> loginUser());
-
-        textViewRegister.setOnClickListener(v -> {
+        binding.textViewRegister.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
     }
 
     private void loginUser() {
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
+        String email = binding.editTextEmail.getText().toString().trim();
+        String password = binding.editTextPassword.getText().toString().trim();
 
-        // Validate inputs
         if (email.isEmpty()) {
-            editTextEmail.setError("Email is required");
-            editTextEmail.requestFocus();
+            binding.editTextEmail.setError("Email is required");
+            binding.editTextEmail.requestFocus();
             return;
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            editTextEmail.setError("Please enter a valid email");
-            editTextEmail.requestFocus();
+            binding.editTextEmail.setError("Please enter a valid email");
+            binding.editTextEmail.requestFocus();
             return;
         }
 
         if (password.isEmpty()) {
-            editTextPassword.setError("Password is required");
-            editTextPassword.requestFocus();
+            binding.editTextPassword.setError("Password is required");
+            binding.editTextPassword.requestFocus();
             return;
         }
 

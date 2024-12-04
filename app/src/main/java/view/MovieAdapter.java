@@ -8,15 +8,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment3.R;
+import com.example.assignment3.databinding.ItemMovieBinding;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,20 +43,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageViewPoster;
-        public TextView textViewTitle, textViewStudio, textViewCriticsRating;
-        public View buttonEdit, buttonDelete;
+        private final ItemMovieBinding binding;
 
-        public MovieViewHolder(View view) {
-            super(view);
-            imageViewPoster = view.findViewById(R.id.imageViewPoster);
-            textViewTitle = view.findViewById(R.id.textViewTitle);
-            textViewStudio = view.findViewById(R.id.textViewStudio);
-            textViewCriticsRating = view.findViewById(R.id.textViewCriticsRating);
-            buttonEdit = view.findViewById(R.id.buttonEdit);
-            buttonDelete = view.findViewById(R.id.buttonDelete);
+        public MovieViewHolder(ItemMovieBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
-            buttonEdit.setOnClickListener(v -> {
+            binding.buttonEdit.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Movie selectedMovie = moviesList.get(position);
@@ -67,7 +59,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 }
             });
 
-            buttonDelete.setOnClickListener(v -> {
+            binding.buttonDelete.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     Movie selectedMovie = moviesList.get(position);
@@ -78,32 +70,34 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 }
             });
         }
+
+        public void bind(Movie movie) {
+            binding.textViewTitle.setText(movie.getTitle());
+            binding.textViewStudio.setText("Studio: " + movie.getStudio());
+            binding.textViewCriticsRating.setText("Rating: " + movie.getCriticsRating());
+
+            // Load poster image if available
+            if (!TextUtils.isEmpty(movie.getPoster())) {
+                loadImageFromUrl(movie.getPoster(), binding.imageViewPoster);
+            } else {
+                binding.imageViewPoster.setImageResource(R.drawable.image); 
+            }
+        }
     }
 
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView =
-                LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_movie, parent, false);
-
-        return new MovieViewHolder(itemView);
+        // Inflate the layout using View Binding
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ItemMovieBinding binding = ItemMovieBinding.inflate(inflater, parent, false);
+        return new MovieViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = moviesList.get(position);
-
-        holder.textViewTitle.setText(movie.getTitle());
-        holder.textViewStudio.setText("Studio: " + movie.getStudio());
-        holder.textViewCriticsRating.setText("Rating: " + movie.getCriticsRating());
-
-        // Load poster image if available
-        if (!TextUtils.isEmpty(movie.getPoster())) {
-            loadImageFromUrl(movie.getPoster(), holder.imageViewPoster);
-        } else {
-            holder.imageViewPoster.setImageResource(R.drawable.image); 
-        }
+        holder.bind(movie);
     }
 
     private void loadImageFromUrl(String url, ImageView imageView) {
