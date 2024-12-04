@@ -9,17 +9,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <EditText
-                android:id="@+id/editTextSearch"
-                android:hint="Search by title"
+        <!-- Horizontal Layout for Search Field and Search Button -->
+        <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:background="@android:drawable/edit_text"
-                android:drawableLeft="@android:drawable/ic_menu_search"
-                android:inputType="text"
-                android:layout_margin="8dp"/>
+                android:layout_margin="8dp">
 
+            <EditText
+                    android:id="@+id/editTextSearch"
+                    android:hint="Search by title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="12dp"
+                    android:background="@android:drawable/edit_text"
+                    android:drawableLeft="@android:drawable/ic_menu_search"
+                    android:inputType="text" />
+
+            <Button
+                    android:id="@+id/buttonSearch"
+                    android:text="Search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <!-- RecyclerView for Movies -->
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewMovies"
                 android:layout_width="match_parent"
@@ -28,6 +44,7 @@
                 android:padding="8dp" />
     </LinearLayout>
 
+    <!-- Floating Action Button to Add Movie -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddMovie"
             android:layout_width="wrap_content"
@@ -37,6 +54,7 @@
             android:src="@drawable/add"
             android:contentDescription="Add Movie" />
 
+    <!-- Logout Button -->
     <Button
             android:id="@+id/buttonLogout"
             android:layout_width="wrap_content"

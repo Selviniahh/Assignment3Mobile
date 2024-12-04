@@ -2,8 +2,6 @@ package view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,18 +68,13 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-        binding.editTextSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                movieViewModel.filterMovies(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+        binding.buttonSearch.setOnClickListener(v -> {
+            String query = binding.editTextSearch.getText().toString().trim();
+            if (!query.isEmpty()) {
+                movieViewModel.filterMovies(query);
+            } else {
+                movieViewModel.filterMovies("");
+                Toast.makeText(this, "Showing all movies", Toast.LENGTH_SHORT).show();
             }
         });
     }

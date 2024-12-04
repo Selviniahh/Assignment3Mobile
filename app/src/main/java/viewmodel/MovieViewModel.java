@@ -3,7 +3,7 @@ package viewmodel;
 import android.text.TextUtils;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import repository.MovieRepository;
 public class MovieViewModel extends ViewModel {
     private MovieRepository repository;
     private LiveData<List<Movie>> moviesLiveData;
-    private MediatorLiveData<List<Movie>> filteredMoviesLiveData = new MediatorLiveData<>();
+    private MutableLiveData<List<Movie>> filteredMoviesLiveData = new MutableLiveData<>();
     private List<Movie> allMovies = new ArrayList<>();
 
     public MovieViewModel() {
@@ -23,7 +23,7 @@ public class MovieViewModel extends ViewModel {
         moviesLiveData = repository.getMoviesLiveData();
         repository.fetchMovies();
 
-        filteredMoviesLiveData.addSource(moviesLiveData, movies -> {
+        moviesLiveData.observeForever(movies -> {
             allMovies.clear();
             if (movies != null) {
                 allMovies.addAll(movies);
@@ -65,4 +65,6 @@ public class MovieViewModel extends ViewModel {
     public void deleteMovie(String movieId) {
         repository.deleteMovie(movieId);
     }
+    
+    
 }
