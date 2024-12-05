@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.assignment3.databinding.ActivityRegisterBinding;
 import com.google.firebase.auth.FirebaseAuth;
-
+//.
 public class RegisterActivity extends AppCompatActivity {
 
     private ActivityRegisterBinding binding;

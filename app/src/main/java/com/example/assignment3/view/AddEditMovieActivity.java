@@ -46,7 +46,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
             finish();
         });
     }
-
+//a
     private void populateFields(Movie movie) {
         binding.editTextTitle.setText(movie.getTitle());
         binding.editTextStudio.setText(movie.getStudio());

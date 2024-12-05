@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
-
+//.
         moviesList = new ArrayList<>();
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         movieAdapter = new MovieAdapter(this, moviesList, movieViewModel);

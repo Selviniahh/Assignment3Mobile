@@ -78,7 +78,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             if (!TextUtils.isEmpty(movie.getPoster())) {
                 loadImageFromUrl(movie.getPoster(), binding.imageViewPoster);
             } else {
-                binding.imageViewPoster.setImageResource(R.drawable.image); // Corrected
+                binding.imageViewPoster.setImageResource(R.drawable.image); // Corrected.
             }
         }
     }
