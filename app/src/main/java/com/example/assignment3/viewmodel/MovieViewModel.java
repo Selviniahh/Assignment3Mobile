@@ -16,14 +16,28 @@ public class MovieViewModel extends ViewModel {
         moviesLiveData = repository.getMoviesLiveData();
         repository.fetchMovies();
     }
+    
+    
 
     public LiveData<List<Movie>> getMoviesLiveData() {
         return moviesLiveData;
     }
 
-    public void addMovie(Movie movie) {
-        repository.addMovie(movie);
+    public void addMovie(Movie movie, AddMovieCallback callback) {
+        repository.addMovie(movie).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                callback.onSuccess();
+            } else {
+                callback.onFailure(task.getException() != null ? task.getException().getMessage() : "Unknown error");
+            }
+        });
     }
+
+    public interface AddMovieCallback {
+        void onSuccess();
+        void onFailure(String error);
+    }
+
 
     public void updateMovie(Movie movie) {
         repository.updateMovie(movie);

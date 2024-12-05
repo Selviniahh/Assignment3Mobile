@@ -60,7 +60,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
         String studio = binding.editTextStudio.getText().toString().trim();
         String criticsRating = binding.editTextCriticsRating.getText().toString().trim();
         String posterUrl = binding.editTextPosterUrl.getText().toString().trim();
-        boolean isFavorite = binding.checkBoxFavorite.isChecked(); 
+        boolean isFavorite = binding.checkBoxFavorite.isChecked();
 
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(studio)) {
             Toast.makeText(this, "Title and Studio are required", Toast.LENGTH_SHORT).show();
@@ -75,6 +75,7 @@ public class AddEditMovieActivity extends AppCompatActivity {
         }
 
         if (movieToEdit != null) {
+            // Editing an existing movie
             movieToEdit.setTitle(title);
             movieToEdit.setStudio(studio);
             movieToEdit.setCriticsRating(criticsRating);
@@ -83,15 +84,28 @@ public class AddEditMovieActivity extends AppCompatActivity {
             movieViewModel.updateMovie(movieToEdit);
             Toast.makeText(this, "Movie updated", Toast.LENGTH_SHORT).show();
         } else {
+            // Adding a new movie
             Movie newMovie = new Movie();
             newMovie.setTitle(title);
             newMovie.setStudio(studio);
             newMovie.setCriticsRating(criticsRating);
             newMovie.setPoster(posterUrl);
-            newMovie.setFavorite(isFavorite); 
-            movieViewModel.addMovie(newMovie);
-            Toast.makeText(this, "Movie added", Toast.LENGTH_SHORT).show();
+            newMovie.setFavorite(isFavorite);
+
+            movieViewModel.addMovie(newMovie, new MovieViewModel.AddMovieCallback() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(AddEditMovieActivity.this, "Movie added successfully!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(AddEditMovieActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    Toast.makeText(AddEditMovieActivity.this, "Failed to add movie: " + error, Toast.LENGTH_LONG).show();
+                }
+            });
         }
-        finish();
     }
 }

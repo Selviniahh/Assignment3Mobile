@@ -44,7 +44,12 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
-//.
+
+        binding.buttonRealSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SearchMoviesActivity.class);
+            startActivity(intent);
+        });
+
         moviesList = new ArrayList<>();
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         movieAdapter = new MovieAdapter(this, moviesList, movieViewModel);
@@ -102,4 +107,6 @@ public class MainActivity extends AppCompatActivity {
         moviesList.addAll(filteredList);
         movieAdapter.notifyDataSetChanged();
     }
+    
+    
 }

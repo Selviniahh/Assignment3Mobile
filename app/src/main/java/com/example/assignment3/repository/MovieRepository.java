@@ -8,6 +8,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.example.assignment3.model.Movie;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +33,7 @@ public class MovieRepository {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                } //.
+                } //..
 
                 for (DocumentChange dc : snapshots.getDocumentChanges()) {
                     switch (dc.getType()) {
@@ -70,14 +73,6 @@ public class MovieRepository {
         return -1;
     }
 
-    public void addMovie(Movie movie) {
-        db.collection("movies").add(movie).addOnSuccessListener(documentReference -> {
-            // Movie added successfully
-        }).addOnFailureListener(e -> {
-            // Handle failure
-        });
-    }
-
     public void updateMovie(Movie movie) {
         db.collection("movies").document(movie.getId()).set(movie).addOnSuccessListener(aVoid -> {
         }).addOnFailureListener(e -> {
@@ -87,6 +82,20 @@ public class MovieRepository {
     public void deleteMovie(String movieId) {
         db.collection("movies").document(movieId).delete().addOnSuccessListener(aVoid -> {
         }).addOnFailureListener(e -> {
+        });
+    }
+
+    public Task<Void> addMovie(Movie movie) {
+        return db.collection("movies").add(movie).addOnSuccessListener(documentReference -> {
+            // Movie added successfully
+        }).addOnFailureListener(e -> {
+            // Handle failure
+        }).continueWith(task -> {
+            if (task.isSuccessful()) {
+                return null;
+            } else {
+                throw task.getException();
+            }
         });
     }
 }

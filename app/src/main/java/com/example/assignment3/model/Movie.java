@@ -10,7 +10,7 @@ public class Movie implements Serializable {
     private String criticsRating;
     private boolean isFavorite; 
 
-    // Default Constructor.
+    // Default Constructor.....
     public Movie() {
     }
 
